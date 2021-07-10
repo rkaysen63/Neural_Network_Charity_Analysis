@@ -1,10 +1,9 @@
 # Neural_Network_Charity_Analysis
-Neural Networks
 
 <p align="center">
-  <a href="#">Title</a>
+  <a href="#">Neural Networks</a>
   <br/><br/> 
-  <img src="images/image.png" width="800">
+  <img src="Images/jj-ying-8bghKxNU1j0-unsplash.jpg" width="800">
 </p>
   
 ## Table of Contents
@@ -20,6 +19,7 @@ Neural Networks
   * Python
   * Colaboratory (Colab) notebook for writing code
   * Jupyter Notebook
+* Opening image courtesy of: Photo by JJ Ying on Unsplash (Nice photo JJ Ying!) 
 * Lesson Plan: UTA-VIRT-DATA-PT-02-2021-U-B-TTH, Module 19 Challenge
 
 ## Overview:
