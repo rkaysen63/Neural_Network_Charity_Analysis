@@ -3,7 +3,7 @@
 <p align="center">
   <a href="#">Neural Networks</a>
   <br/><br/> 
-  <img src="Images/jj-ying-8bghKxNU1j0-unsplash.jpg" width="800">
+  <img src="Images/jj-ying-8bghKxNU1j0-unsplash.jpg" width="700">
 </p>
   
 ## Table of Contents
@@ -32,14 +32,14 @@ Using bulleted lists and images to support your answers, address the following q
 <p align="center">
   <a href="#">application_df:  Data is loaded into a DataFrame using Pandas</a>
   <br/><br/> 
-  <img src="Images/application_df1.png" width="800">
+  <img src="Images/application_df1.png" width="700">
 </p>
 
 * Drop the non-beneficial ID columns, 'EIN' and 'NAME'.<br/><br/> 
   `application_df = application_df.drop(columns = ["EIN", "NAME"])`<br/><br/> 
 
 <p align="center">
-  <img src="Images/application_df2.png" width="800">
+  <img src="Images/application_df2.png" width="700">
 </p>  
   
 * Group together columns with more than 10 unique values.<br/><br/> 
@@ -56,14 +56,14 @@ Using bulleted lists and images to support your answers, address the following q
       application_type_counts
 
 <p align="center">
-  <img src="Images/app_type_counts1.png" width="200">
+  <img src="Images/app_type_counts1.png" width="300">
 </p>  
         
       # Visualize the value counts of APPLICATION_TYPE.
       application_type_counts.plot.density()
 
 <p align="center">
-  <img src="Images/app_type_density.png" width="600">
+  <img src="Images/app_type_density.png" width="500">
 </p>  
         
     # Determine which values to replace if counts are less than ? (19.3.3)
@@ -77,7 +77,7 @@ Using bulleted lists and images to support your answers, address the following q
     application_df.APPLICATION_TYPE.value_counts()
 
 <p align="center">
-  <img src="Images/app_type_counts2.png" width="200">
+  <img src="Images/app_type_counts2.png" width="300">
 </p>  
 
     # Look at CLASSIFICATION value counts for binning.
@@ -85,14 +85,14 @@ Using bulleted lists and images to support your answers, address the following q
     classification_counts
 
 <p align="center">
-  <img src="Images/cls_counts1.png" width="200">
+  <img src="Images/cls_counts1.png" width="300">
 </p>  
         
     # Visualize the value counts of CLASSIFICATION.
     classification_counts.plot.density()
 
 <p align="center">
-  <img src="Images/cls_density.png" width="600">
+  <img src="Images/cls_density.png" width="500">
 </p>  
         
     # Determine which values to replace if counts are less than ..? (19.3.3)
@@ -106,7 +106,7 @@ Using bulleted lists and images to support your answers, address the following q
     application_df.CLASSIFICATION.value_counts()
 
 <p align="center">
-  <img src="Images/cls_counts2.png" width="200">
+  <img src="Images/cls_counts2.png" width="300">
 </p> 
 
 * Encode the categorical variables using one-hot encoding.<br/><br/> 
@@ -130,7 +130,7 @@ Using bulleted lists and images to support your answers, address the following q
     encode_df.head()
 
 <p align="center">
-  <img src="Images/encode_df.png" width="800">
+  <img src="Images/encode_df.png" width="700">
 </p>  
   
     # Merge one-hot encoded features and drop the originals
@@ -139,7 +139,7 @@ Using bulleted lists and images to support your answers, address the following q
     application_df.head()  
 
 <p align="center">
-  <img src="Images/application_df3.png" width="800">
+  <img src="Images/application_df3.png" width="700">
 </p>  
   
 * Split the preprocessed data into features and target arrays.<br/><br/> 
