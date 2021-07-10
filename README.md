@@ -80,7 +80,7 @@ Using bulleted lists and images to support your answers, address the following q
   <img src="Images/app_type_counts2.png" width="200">
 </p>  
 
-     # Look at CLASSIFICATION value counts for binning.
+    # Look at CLASSIFICATION value counts for binning.
     classification_counts = application_df.CLASSIFICATION.value_counts()
     classification_counts
 
