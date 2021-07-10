@@ -56,14 +56,14 @@ Using bulleted lists and images to support your answers, address the following q
       application_type_counts
 
 <p align="center">
-  <img src="Images/app_type_counts1.png" width="300">
+  <img src="Images/app_type_counts1.png" width="250">
 </p>  
         
       # Visualize the value counts of APPLICATION_TYPE.
       application_type_counts.plot.density()
 
 <p align="center">
-  <img src="Images/app_type_density.png" width="500">
+  <img src="Images/app_type_density.png" width="400">
 </p>  
         
     # Determine which values to replace if counts are less than ? (19.3.3)
@@ -77,7 +77,7 @@ Using bulleted lists and images to support your answers, address the following q
     application_df.APPLICATION_TYPE.value_counts()
 
 <p align="center">
-  <img src="Images/app_type_counts2.png" width="300">
+  <img src="Images/app_type_counts2.png" width="250">
 </p>  
 
     # Look at CLASSIFICATION value counts for binning.
@@ -92,7 +92,7 @@ Using bulleted lists and images to support your answers, address the following q
     classification_counts.plot.density()
 
 <p align="center">
-  <img src="Images/cls_density.png" width="500">
+  <img src="Images/cls_density.png" width="400">
 </p>  
         
     # Determine which values to replace if counts are less than ..? (19.3.3)
@@ -106,7 +106,7 @@ Using bulleted lists and images to support your answers, address the following q
     application_df.CLASSIFICATION.value_counts()
 
 <p align="center">
-  <img src="Images/cls_counts2.png" width="300">
+  <img src="Images/cls_counts2.png" width="250">
 </p> 
 
 * Encode the categorical variables using one-hot encoding.<br/><br/> 
