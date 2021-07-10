@@ -26,7 +26,6 @@
 The purpose of this analysis is to create a model that will predict whether or not applicants for charitable funding will be successful.
 
 ## Results:
-Using bulleted lists and images to support your answers, address the following questions.
 
 ### Deliverable 1 Requirements
 <p align="center">
