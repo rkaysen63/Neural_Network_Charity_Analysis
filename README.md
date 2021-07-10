@@ -149,10 +149,10 @@ Using bulleted lists and images to support your answers, address the following q
       # Features
       X = application_df.drop(["IS_SUCCESSFUL"],axis=1).values
     
-* The preprocessed data is split into training and testing datasets <br/><br/> 
+* Split the preprocessed data into training and testing datasets. <br/><br/> 
   `X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)`
 
-* The numerical values have been standardized using the StandardScaler() module <br/><br/> 
+* Standardize the numerical values using the StandardScaler() module. <br/><br/> 
 
       # Create a StandardScaler instances
       scaler = StandardScaler()
