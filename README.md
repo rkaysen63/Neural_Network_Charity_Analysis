@@ -13,17 +13,17 @@
 * [Summary](https://github.com/rkaysen63/Neural_Network_Charity_Analysis/blob/master/README.md#summary)
 
 ## Resources:    
-* Data: 
-  *  
+* Data: charity_data.csv
 * Tools: 
   * Python
   * Colaboratory (Colab) notebook for writing code
   * Jupyter Notebook
+* # https://stackoverflow.com/questions/59069058/save-model-every-10-epochs-tensorflow-keras-v2
 * Opening image courtesy of: Photo by JJ Ying on Unsplash (Nice photo JJ Ying!) 
 * Lesson Plan: UTA-VIRT-DATA-PT-02-2021-U-B-TTH, Module 19 Challenge
 
 ## Overview:
-The purpose of this analysis is to create a model that will predict whether or not applicants for charitable funding will be successful.
+Alphabet Soup is a charitable foundation that has funded over 34,000 organizations over the years.  The purpose of the funding is to assist organizations with their philanthropic projects.  The data collected shows that each organization in their database has either made an impact, i.e. "IS SUCCESSFUL", or not.  The purpose of this analysis is to create a model from the existing metadata about each organization that will predict whether or not a future applicant will be successful.  In other words, the purpose is to create a model that will help Alphabet Soup determine which future applications should be accepted or rejected.
 
 ## Results:
 
@@ -187,8 +187,43 @@ The purpose of this analysis is to create a model that will predict whether or n
   <img src="Images/Del_2_Model_Sequential.png" width="500">
 </p> 
 
-    # Compile the model
-    nn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+* Train the model and save the model's weights every 5 epochs.
+
+      # Import checkpoint dependencies
+      import os
+      from tensorflow.keras.callbacks import ModelCheckpoint, Callback
+
+      # Define the checkpoint path and filenames
+      os.makedirs("checkpoints/",exist_ok=True)
+      checkpoint_path = "checkpoints/weights.{epoch:02d}.hdf5"
+
+      # Compile the model
+      nn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+# Create a callback that saves the model's weights every 5 epochs
+
+
+
+batch_size=32
+steps_per_epoch = int(y_train.size / batch_size)
+period = 5
+
+cp_callback = ModelCheckpoint(
+    filepath=checkpoint_path,
+    verbose=1,
+    save_weights_only=True,
+    save_freq= period * steps_per_epoch)
+
+# Train the model
+fit_model = nn.fit(X_train_scaled,y_train,batch_size=32,epochs=100,callbacks=[cp_callback])
+
+
+
+
+
+
+
+
 
     # Train the model
     fit_model = nn.fit(X_train_scaled, y_train, epochs=50)
@@ -197,17 +232,20 @@ The purpose of this analysis is to create a model that will predict whether or n
   <img src="Images/Del_2_fit_model.png" width="700">
 </p> 
 
-    # Evaluate the model using the test data
-    model_loss, model_accuracy = nn.evaluate(X_test_scaled,y_test,verbose=2)
-    print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+* Display output of the model's loss and accuracy.
+
+      # Evaluate the model using the test data
+      model_loss, model_accuracy = nn.evaluate(X_test_scaled,y_test,verbose=2)
+      print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
 
 <p align="center">
   <img src="Images/Del_2_evaluate_model.png" width="600">
 </p> 
 
 
-* The model's weights are saved every 5 epochs (2.5 pt)
-* The results are saved to an HDF5 file (2.5 pt)
+* Save results are to an HDF5 file.
+
+
 
 ### Deliverable 3 Requirements
 You will earn a perfect score for Deliverable 3 by completing all requirements below:
