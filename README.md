@@ -18,7 +18,7 @@
   * Python
   * Colaboratory (Colab) notebook for writing code
   * Jupyter Notebook
-* # https://stackoverflow.com/questions/59069058/save-model-every-10-epochs-tensorflow-keras-v2
+* https://stackoverflow.com/questions/59069058/save-model-every-10-epochs-tensorflow-keras-v2
 * Opening image courtesy of: Photo by JJ Ying on Unsplash (Nice photo JJ Ying!) 
 * Lesson Plan: UTA-VIRT-DATA-PT-02-2021-U-B-TTH, Module 19 Challenge
 
@@ -200,52 +200,39 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       # Compile the model
       nn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-# Create a callback that saves the model's weights every 5 epochs
+      # Create a callback that saves the model's weights every 5 epochs
 
+      batch_size=32
+      steps_per_epoch = int(y_train.size / batch_size)
+      period = 5
 
+      cp_callback = ModelCheckpoint(
+          filepath=checkpoint_path,
+          verbose=1,
+          save_weights_only=True,
+          save_freq= period * steps_per_epoch)
 
-batch_size=32
-steps_per_epoch = int(y_train.size / batch_size)
-period = 5
-
-cp_callback = ModelCheckpoint(
-    filepath=checkpoint_path,
-    verbose=1,
-    save_weights_only=True,
-    save_freq= period * steps_per_epoch)
-
-# Train the model
-fit_model = nn.fit(X_train_scaled,y_train,batch_size=32,epochs=100,callbacks=[cp_callback])
-
-
-
-
-
-
-
-
-
-    # Train the model
-    fit_model = nn.fit(X_train_scaled, y_train, epochs=50)
+      # Train the model
+      fit_model = nn.fit(X_train_scaled,y_train,batch_size=32,epochs=100,callbacks=[cp_callback])
 
 <p align="center">
   <img src="Images/Del_2_fit_model.png" width="700">
 </p> 
 
-* Display output of the model's loss and accuracy.
+* Display output of the model's loss and accuracy.<br/><br/> 
 
       # Evaluate the model using the test data
       model_loss, model_accuracy = nn.evaluate(X_test_scaled,y_test,verbose=2)
       print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
 
 <p align="center">
-  <img src="Images/Del_2_evaluate_model.png" width="600">
+  <img src="Images/Del_2_evaluate_model.png" width="400">
 </p> 
 
+* Save results are to an HDF5 file.<br/><br/> 
 
-* Save results are to an HDF5 file.
-
-
+      # Export our model to HDF5 file
+      nn.save("trained_application.h5")
 
 ### Deliverable 3 Requirements
 You will earn a perfect score for Deliverable 3 by completing all requirements below:
