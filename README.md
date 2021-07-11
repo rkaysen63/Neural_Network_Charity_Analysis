@@ -164,13 +164,48 @@ The purpose of this analysis is to create a model that will predict whether or n
       X_test_scaled = X_scaler.transform(X_test)
 
 ### Deliverable 2 Requirements
-You will earn a perfect score for Deliverable 2 by completing all requirements below:
 
-* The neural network model using Tensorflow Keras contains working code that performs the following steps:
-* The number of layers, the number of neurons per layer, and activation function are defined (2.5 pt)
-* An output layer with an activation function is created (2.5 pt)
-* There is an output for the structure of the model (5 pt)
-* There is an output of the model’s loss and accuracy (5 pt)
+* Define the neural network model using Tensorflow Keras.<br/><br/> 
+
+      nn = tf.keras.models.Sequential()
+
+      # First hidden layer
+      nn.add(tf.keras.layers.Dense(units=80, activation="relu", input_dim=43))
+
+      # Second hidden layer
+      nn.add(tf.keras.layers.Dense(units=30, activation="relu"))
+
+      # Output layer
+      nn.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))     
+
+      # Check the structure of the model
+      nn.summary()
+  
+<p align="center">
+  <a href="#">"nn" Model Structure</a>
+  <br/><br/> 
+  <img src="Images/Del_2_Model_Sequential.png" width="500">
+</p> 
+
+    # Compile the model
+    nn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+    # Train the model
+    fit_model = nn.fit(X_train_scaled, y_train, epochs=50)
+
+<p align="center">
+  <img src="Images/Del_2_fit_model.png" width="700">
+</p> 
+
+    # Evaluate the model using the test data
+    model_loss, model_accuracy = nn.evaluate(X_test_scaled,y_test,verbose=2)
+    print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+
+<p align="center">
+  <img src="Images/Del_2_evaluate_model.png" width="600">
+</p> 
+
+
 * The model's weights are saved every 5 epochs (2.5 pt)
 * The results are saved to an HDF5 file (2.5 pt)
 
