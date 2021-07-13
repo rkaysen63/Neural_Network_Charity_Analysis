@@ -1,7 +1,8 @@
 # Ignore files:
 Resources
+untitled_project
 AlphabetSoupCharity_starter_code.ipynb
-AlphabetSoupCharity_rework.ipynb
+AlphabetSoupCharity_Optimization_2.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
