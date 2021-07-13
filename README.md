@@ -335,21 +335,21 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       # Run the kerastuner search for best hyperparameters
       tuner.search(X_train_scaled,y_train,batch_size=64,epochs=20,validation_data=(X_test_scaled,y_test))
 
-      <p align="center">
-        <img src="Images/Del_3_kt_search.png" width="400">
-      </p> 
+<p align="center">
+  <img src="Images/Del_3_kt_search.png" width="400">
+</p> 
 
       # Tuner results summary shows 10 best trials
       tuner.results_summary()
       
-  Check the best models structure.
+  Check the best model's structure.
   
       nn = tuner.get_best_models(num_models=1)[0]
       nn.summary()
 
-      <p align="center">
-        <img src="Images/Del_3_kt_nn_structure.png" width="600">
-      </p> 
+<p align="center">
+  <img src="Images/Del_3_kt_nn_structure.png" width="500">
+</p> 
 
 * Compile and train the model.  Save the model's weights every 5 epochs.
 
@@ -381,7 +381,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       fit_model = nn.fit(X_train_scaled,y_train,batch_size=32,epochs=100,callbacks=[cp_callback])
 
 <p align="center">
-  <img src="Images/Del_3_fit_model.png" width="700">
+  <img src="Images/Del_3_fit_model.png" width="600">
 </p> 
 
 
@@ -390,7 +390,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
     print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
  
 <p align="center">
-  <img src="Images/Del_3_evaluate_model.png" width="400">
+  <img src="Images/Del_3_evaluate_model.png" width="600">
 </p>           
 
 * Export nn model to HDF5 file.
