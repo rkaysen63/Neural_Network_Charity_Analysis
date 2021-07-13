@@ -235,15 +235,157 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       nn.save("trained_application.h5")
 
 ### Deliverable 3 Requirements
-You will earn a perfect score for Deliverable 3 by completing all requirements below:
 
 * The model is optimized, and the predictive accuracy is increased to over 75%, or there is working code that makes three attempts to increase model performance using the following steps:
-* Noisy variables are removed from features (2.5 pt)
-* Additional neurons are added to hidden layers (2.5 pt)
-* Additional hidden layers are added (5 pt)
-* The activation function of hidden layers or output layers is changed for optimization (5 pt)
+
+* Remove noisy variables from features.  
+  In the original preprocessing, ID columns 'EIN' and 'NAMES' were dropped as unnecessary. Then the DataFrame columns were checked for number of unique values, `nunique`, in order to determine whether or not to bucket some of the data.  Since both the "CLASSIFICATION" and "APPLICATION_TYPE" columns had more than 10 unique values each, their `value_counts` were were visualized in a density plot for each.  A set point for each columm was established such that any `value_counts` less than the set point would be bucketed into an "Other" category.  Even with the bucketing, model losses were 0.56 and Accuracy only 73%.  For this reason, additional preprocessing steps were taken in an attempt to boost the accuracy of the model.
+
+  1) First the DataFrame was re-loaded and this time only 'EIN' was dropped to see if binning 'NAMES' could improve optimization.
+  2) Then a variable to hold the `value_counts` of the names was created.
+  
+          name_counts = application_df.NAME.value_counts()
+ 
+  3) The name_counts were plotted in a density curve.
+  4) Five or less name_counts were then bucketed into an "Other" category.
+
+          # Replace if counts are less than or equal to 5.
+          replace_name = list(name_counts[name_counts <= 5].index)
+
+          # Replace in dataframe
+          for name in replace_name:
+              application_df.NAME = application_df.NAME.replace(name,"Other")
+
+          # Check to make sure binning was successful
+          application_df.NAME.value_counts()
+
+  5) "CLASSIFICATION" was binned as before.
+  6) "APPLICATION_TYPE" was binned as well, but the `value_counts` set point to "Other" category was larger, thereby increasing the "Other" category from 276 to 804 `value_counts`.
+  7) After reviewing the SPECIAL_CONSIDERATIONS `value_counts` for binning, I decided to drop the column since less than one percent (27/34299 * 100) of the applicants had special considerations.  
+
+          spec_counts = application_df.SPECIAL_CONSIDERATIONS.value_counts()
+          application_df = application_df.drop(columns = ["SPECIAL_CONSIDERATIONS"])
+          print(application_df.shape)
+          application_df.head()
+
+  8) And finally, the categorical data was encoded as before with OneHotEncoder, merged back into the original DataFrame and the original categorical data dropped.
+
+* Optimize the model by adding neurons to hidden layers, adding additional hidden layers, and changing the activation function of hidden or output layers.
+  The model was optimized using keras tuner and 
+  
+      # Split our preprocessed data into our features and target arrays
+      #  Target
+      y = application_df["IS_SUCCESSFUL"].values
+      # Features
+      X = application_df.drop(["IS_SUCCESSFUL"],axis=1).values
+
+      # Split the preprocessed data into a training and testing dataset
+      X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+
+      # Create a StandardScaler instances
+      scaler = StandardScaler()
+
+      # Fit the StandardScaler
+      X_scaler = scaler.fit(X_train)
+
+      # Scale the data
+      X_train_scaled = X_scaler.transform(X_train)
+      X_test_scaled = X_scaler.transform(X_test)
+
+      number_input_features = len(X_train[0])
+      number_input_features
+
+      # Create a method that creates a new Sequential model with hyperparameter options
+      def create_model(hp):
+          nn_model = tf.keras.models.Sequential()
+
+          # Allow kerastuner to decide which activation function to use in hidden layers
+          activation = hp.Choice('activation',['relu','tanh','sigmoid'])
+
+          # Allow kerastuner to decide number of neurons in first layer
+          nn_model.add(tf.keras.layers.Dense(units=hp.Int('first_units',
+              min_value=1,
+              max_value=100,
+              step=2), activation=activation, input_dim=395))
+
+          # Allow kerastuner to decide number of hidden layers and neurons in hidden layers
+          for i in range(hp.Int('num_layers', 1, 6)):
+              nn_model.add(tf.keras.layers.Dense(units=hp.Int('units_' + str(i),
+                  min_value=1,
+                  max_value=40,
+                  step=2),
+                  activation=activation))
+
+          nn_model.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+
+          # Compile the model
+          nn_model.compile(loss="binary_crossentropy", optimizer='adam', metrics=["accuracy"])
+
+          return nn_model
+
+      # Import the kerastuner library
+      from tensorflow import keras
+      import keras_tuner as kt
+
+      tuner = kt.Hyperband(
+          create_model,
+          objective="val_accuracy",
+          max_epochs=20,
+          hyperband_iterations=2)
+      # Run the kerastuner search for best hyperparameters
+      tuner.search(X_train_scaled,y_train,batch_size=64,epochs=20,validation_data=(X_test_scaled,y_test))
+
+      <p align="center">
+        <img src="Images/Del_2_fit_model.png" width="700">
+      </p> 
+
+      # Tuner results summary shows 10 best trials
+      tuner.results_summary()
+
+      nn = tuner.get_best_models(num_models=1)[0]
+      nn.summary()
+
 * The model's weights are saved every 5 epochs (2.5 pt)
-* The results are saved to an HDF5 file (2.5 pt)
+
+      # Import checkpoint dependencies
+      import os
+      from tensorflow.keras.callbacks import ModelCheckpoint, Callback
+
+      # Define the checkpoint path and filenames
+      os.makedirs("checkpoints2/",exist_ok=True)
+      checkpoint_path = "checkpoints2/weights.{epoch:02d}.hdf5"
+
+      # Compile the model
+      nn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+      # Create a callback that saves the model's weights every 5 epochs
+      # https://stackoverflow.com/questions/59069058/save-model-every-10-epochs-tensorflow-keras-v2
+
+      batch_size=32
+      steps_per_epoch = int(y_train.size / batch_size)
+      period = 5
+
+      cp_callback = ModelCheckpoint(
+          filepath=checkpoint_path,
+          verbose=1,
+          save_weights_only=True,
+          save_freq= period * steps_per_epoch)
+
+      # Train the model
+      fit_model = nn.fit(X_train_scaled,y_train,batch_size=32,epochs=100,callbacks=[cp_callback])
+
+<p align="center">
+  <img src="Images/Del_2_fit_model.png" width="700">
+</p> 
+
+
+    # Evaluate the model using the test data
+    model_loss, model_accuracy = test_model.evaluate(X_test_scaled,y_test,verbose=2)
+    print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+
+* Export nn model to HDF5 file.
+
+      nn.save("AlphabetSoupCharity_Optimization.h5")
 
 * Data Preprocessing
   * What variable(s) are considered the target(s) for your model?
