@@ -236,8 +236,6 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
 ### Deliverable 3 Requirements
 
-* The model is optimized, and the predictive accuracy is increased to over 75%, or there is working code that makes three attempts to increase model performance using the following steps:
-
 * Remove noisy variables from features.  
   In the original preprocessing, ID columns 'EIN' and 'NAMES' were dropped as unnecessary. Then the DataFrame columns were checked for number of unique values, `nunique`, in order to determine whether or not to bucket some of the data.  Since both the "CLASSIFICATION" and "APPLICATION_TYPE" columns had more than 10 unique values each, their `value_counts` were were visualized in a density plot for each.  A set point for each columm was established such that any `value_counts` less than the set point would be bucketed into an "Other" category.  Even with the bucketing, model losses were 0.56 and Accuracy only 73%.  For this reason, additional preprocessing steps were taken in an attempt to boost the accuracy of the model.
 
@@ -271,7 +269,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
   8) And finally, the categorical data was encoded as before with OneHotEncoder, merged back into the original DataFrame and the original categorical data dropped.
 
 * Optimize the model by adding neurons to hidden layers, adding additional hidden layers, and changing the activation function of hidden or output layers.
-  The model was optimized using keras tuner and 
+  The newly re-preprocessed data is split into features and target arrays, then split into training and testing datasets, X_train and X_test datasets are scaled.  Before there were 43 features, but now there are 395 features.
   
       # Split our preprocessed data into our features and target arrays
       #  Target
@@ -294,6 +292,8 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
       number_input_features = len(X_train[0])
       number_input_features
+      
+  Create a function to allow kerastuner to decide the number of hidden layers, number of neurons in each layer and the activation functions for each layer.
 
       # Create a method that creates a new Sequential model with hyperparameter options
       def create_model(hp):
@@ -336,16 +336,22 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       tuner.search(X_train_scaled,y_train,batch_size=64,epochs=20,validation_data=(X_test_scaled,y_test))
 
       <p align="center">
-        <img src="Images/Del_2_fit_model.png" width="700">
+        <img src="Images/Del_3_kt_search.png" width="400">
       </p> 
 
       # Tuner results summary shows 10 best trials
       tuner.results_summary()
-
+      
+  Check the best models structure.
+  
       nn = tuner.get_best_models(num_models=1)[0]
       nn.summary()
 
-* The model's weights are saved every 5 epochs (2.5 pt)
+      <p align="center">
+        <img src="Images/Del_3_kt_nn_structure.png" width="600">
+      </p> 
+
+* Compile and train the model.  Save the model's weights every 5 epochs.
 
       # Import checkpoint dependencies
       import os
@@ -375,13 +381,17 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       fit_model = nn.fit(X_train_scaled,y_train,batch_size=32,epochs=100,callbacks=[cp_callback])
 
 <p align="center">
-  <img src="Images/Del_2_fit_model.png" width="700">
+  <img src="Images/Del_3_fit_model.png" width="700">
 </p> 
 
 
     # Evaluate the model using the test data
     model_loss, model_accuracy = test_model.evaluate(X_test_scaled,y_test,verbose=2)
     print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+ 
+<p align="center">
+  <img src="Images/Del_3_evaluate_model.png" width="400">
+</p>           
 
 * Export nn model to HDF5 file.
 
