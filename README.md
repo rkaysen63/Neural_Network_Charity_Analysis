@@ -323,6 +323,8 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
           return nn_model
 
+  Run the kerastuner search for best hyperparameters.
+  
       # Import the kerastuner library
       from tensorflow import keras
       import keras_tuner as kt
@@ -383,7 +385,6 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 <p align="center">
   <img src="Images/Del_3_fit_model.png" width="600">
 </p> 
-
 
     # Evaluate the model using the test data
     model_loss, model_accuracy = test_model.evaluate(X_test_scaled,y_test,verbose=2)
