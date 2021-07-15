@@ -31,14 +31,14 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 <p align="center">
   <a href="#">application_df:  Data is loaded into a DataFrame using Pandas</a>
   <br/><br/> 
-  <img src="Images/application_df1.png" width="700">
+  <img src="Images/application_df1.png" width="800">
 </p>
 
 * Drop the non-beneficial ID columns, 'EIN' and 'NAME'.<br/><br/> 
   `application_df = application_df.drop(columns = ["EIN", "NAME"])`<br/><br/> 
 
 <p align="center">
-  <img src="Images/application_df2.png" width="700">
+  <img src="Images/application_df2.png" width="800">
 </p>  
   
 * Group together columns with more than 10 unique values.<br/><br/> 
@@ -65,7 +65,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
   <img src="Images/app_type_density.png" width="400">
 </p>  
         
-    # Determine which values to replace if counts are less than ? (19.3.3)
+    # Determine which values to replace if counts are less than ?
     replace_application = list(application_type_counts[application_type_counts < 500].index)
 
     # Replace in dataframe
@@ -129,7 +129,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
     encode_df.head()
 
 <p align="center">
-  <img src="Images/encode_df.png" width="700">
+  <img src="Images/encode_df.png" width="800">
 </p>  
   
     # Merge one-hot encoded features and drop the originals
@@ -138,7 +138,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
     application_df.head()  
 
 <p align="center">
-  <img src="Images/application_df3.png" width="700">
+  <img src="Images/application_df3.png" width="800">
 </p>  
   
 * Split the preprocessed data into features and target arrays.<br/><br/> 
@@ -264,7 +264,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
           application_df.NAME.value_counts()
 
 <p align="center">
-  <img src="Images/Del_3_names_value_counts.png" width="300">
+  <img src="Images/Del_3_names_value_counts.png" width="400">
 </p> 
 
   5) "CLASSIFICATION" was binned as before.
@@ -408,7 +408,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
     print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
  
 <p align="center">
-  <img src="Images/Del_3_evaluate_model.png" width="600">
+  <img src="Images/Del_3_evaluate_model.png" width="800">
 </p>           
 
 * Export nn model to HDF5 file.
