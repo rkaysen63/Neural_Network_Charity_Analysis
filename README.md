@@ -27,7 +27,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
 ## Results:
 
-### Deliverable 1 Requirements
+### Deliverable 1
 <p align="center">
   <a href="#">application_df:  Data is loaded into a DataFrame using Pandas</a>
   <br/><br/> 
@@ -163,7 +163,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       X_train_scaled = X_scaler.transform(X_train)
       X_test_scaled = X_scaler.transform(X_test)
 
-### Deliverable 2 Requirements
+### Deliverable 2
 
 * Define the neural network model using Tensorflow Keras.<br/><br/> 
 
@@ -234,18 +234,28 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       # Export our model to HDF5 file
       nn.save("trained_application.h5")
 
-### Deliverable 3 Requirements
+### Deliverable 3
 
-* Remove noisy variables from features.  
-  In the original preprocessing, ID columns 'EIN' and 'NAMES' were dropped as unnecessary. Then the DataFrame columns were checked for number of unique values, `nunique`, in order to determine whether or not to bucket some of the data.  Since both the "CLASSIFICATION" and "APPLICATION_TYPE" columns had more than 10 unique values each, their `value_counts` were were visualized in a density plot for each.  A set point for each columm was established such that any `value_counts` less than the set point would be bucketed into an "Other" category.  Even with the bucketing, model losses were 0.56 and Accuracy only 73%.  For this reason, additional preprocessing steps were taken in an attempt to boost the accuracy of the model.
+* Remove noisy variables from features.
+<br/><br/> 
+  In the original preprocessing, ID columns 'EIN' and 'NAMES' were dropped as unnecessary. Then the DataFrame columns were checked for number of unique values, `nunique`, in order to determine whether or not to bucket some of the data.  Since both the "CLASSIFICATION" and "APPLICATION_TYPE" columns had more than 10 unique values each, their `value_counts` were were visualized in a density plot for each.  A set point for each columm was established such that any `value_counts` less than the set point would be bucketed into an "Other" category.  Even with the bucketing, model's loss was 0.56 and the accuracy was only 73% when the model was evaluated.  For this reason, additional preprocessing steps were taken in an attempt to reduce the loss boost the accuracy of the model.
 
   1) First the DataFrame was re-loaded and this time only 'EIN' was dropped to see if binning 'NAMES' could improve optimization.
   2) Then a variable to hold the `value_counts` of the names was created.
   
           name_counts = application_df.NAME.value_counts()
  
+<p align="center">
+  <img src="Images/Del_3_names_value_counts.png" width="300">
+</p> 
+
   3) The name_counts were plotted in a density curve.
-  4) Five or less name_counts were then bucketed into an "Other" category.
+
+<p align="center">
+  <img src="Images/Del_3_names_density.png" width="400">
+</p> 
+
+  5) Five or less name_counts were then bucketed into an "Other" category.
 
           # Replace if counts are less than or equal to 5.
           replace_name = list(name_counts[name_counts <= 5].index)
@@ -268,8 +278,15 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
   8) And finally, the categorical data was encoded as before with OneHotEncoder, merged back into the original DataFrame and the original categorical data dropped.
 
+<p align="center">
+  <img src="Images/Del_3_mergedDF.png" width="700">
+</p> 
+
 * Optimize the model by adding neurons to hidden layers, adding additional hidden layers, and changing the activation function of hidden or output layers.
-  The newly re-preprocessed data is split into features and target arrays, then split into training and testing datasets, X_train and X_test datasets are scaled.  Before there were 43 features, but now there are 395 features.
+<br/><br/> 
+  1) The newly re-preprocessed data is split into features and target arrays. There were 43 features after the data was preprocessed the first round, but after re-preprocessing there are 395 features.
+  2) The features and target arrays are split into training and testing datasets.
+  3) X_train and X_test datasets are scaled.  
   
       # Split our preprocessed data into our features and target arrays
       #  Target
@@ -293,7 +310,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
       number_input_features = len(X_train[0])
       number_input_features
       
-  Create a function to allow kerastuner to decide the number of hidden layers, number of neurons in each layer and the activation functions for each layer.
+  Create a function to allow kerastuner to decide the number of hidden layers, number of neurons in each layer and the activation functions of each layer.
 
       # Create a method that creates a new Sequential model with hyperparameter options
       def create_model(hp):
@@ -398,17 +415,27 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
       nn.save("AlphabetSoupCharity_Optimization.h5")
 
-* Data Preprocessing
-  * What variable(s) are considered the target(s) for your model?
-  * What variable(s) are considered to be the features for your model?
-  * What variable(s) are neither targets nor features, and should be removed from the input data?
-* Compiling, Training, and Evaluating the Model
-  * How many neurons, layers, and activation functions did you select for your neural network model, and why?
-  * Were you able to achieve the target model performance?
-  * What steps did you take to try and increase model performance?
+### Deliverable 4
 
+* Data Preprocessing
+  * The target of the model is the "IS_SUCCESSFUL" category.
+  * Features:
+
+        application_cat = application_df.dtypes[application_df.dtypes == "object"].index.tolist()
+ 
+<p align="center">
+  <img src="Images/Del_4_application_cat.png" width="200">
+</p        
+        
+  * "EIN" is neither a target nor a feature and was removed from the input data.  In addition, "SPECIAL_CONSIDERATIONS" was a noisy variable and for this reason was also removed from the input list.
+* Compiling, Training, and Evaluating the Model
+  * The number of layers, neurons per layer and activation functions were selected by the kerastuner when it was run to search for the best hyperparameters.
+  * Using the kerastuner, I was able to exceed the target accuracy of 75%.
+  * In order to increase model performance, I preprocessed the data to bin "NAME", "APPLICATION_TYPE", and "CLASSIFICATION" columns.  in addition, I dropped the "SPECIAL_CONSIDERATIONS" column since less than one percent of the applicants had special considerations.  I then applied trial and error to estimate number of hidden layers, neurons per layer and activation functions.  I was not able to reach the target accuracy nor improve the loss.  I finally tried the kerastuner function and was able to allow the kerastuner to optimize the model.
+  
 ## Summary:
 Summarize the overall results of the deep learning model. Include a recommendation for how a different model could solve this classification problem, and explain your recommendation.
-
+  
+The results of the deep learning model were moderately successful.  The purpose of the model is help Alphabet Soup determine which applicants to approve based on their likelihood of success, or ability to make an impact with their project.  The model created by the neural network will predict potentially successful applicants with nearly 80% accuracy.  Since this large dataset does include the results, "IS_SUCCESSFUL", a supervised learning model may be able to produce even better results.
 
 [Back to the Table of Contents](https://github.com/rkaysen63/Neural_Network_Charity_Analysis/blob/master/README.md#table-of-contents)
