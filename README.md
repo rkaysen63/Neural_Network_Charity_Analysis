@@ -245,17 +245,13 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
   
           name_counts = application_df.NAME.value_counts()
  
-<p align="center">
-  <img src="Images/Del_3_names_value_counts.png" width="300">
-</p> 
-
   3) The name_counts were plotted in a density curve.
 
 <p align="center">
   <img src="Images/Del_3_names_density.png" width="400">
 </p> 
 
-  5) Five or less name_counts were then bucketed into an "Other" category.
+  4) Five or less name_counts were then bucketed into an "Other" category.
 
           # Replace if counts are less than or equal to 5.
           replace_name = list(name_counts[name_counts <= 5].index)
@@ -266,6 +262,10 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
           # Check to make sure binning was successful
           application_df.NAME.value_counts()
+
+<p align="center">
+  <img src="Images/Del_3_names_value_counts.png" width="300">
+</p> 
 
   5) "CLASSIFICATION" was binned as before.
   6) "APPLICATION_TYPE" was binned as well, but the `value_counts` set point to "Other" category was larger, thereby increasing the "Other" category from 276 to 804 `value_counts`.
@@ -288,27 +288,27 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
   2) The features and target arrays are split into training and testing datasets.
   3) X_train and X_test datasets are scaled.  
   
-      # Split our preprocessed data into our features and target arrays
-      #  Target
-      y = application_df["IS_SUCCESSFUL"].values
-      # Features
-      X = application_df.drop(["IS_SUCCESSFUL"],axis=1).values
+          # Split our preprocessed data into our features and target arrays
+          #  Target
+          y = application_df["IS_SUCCESSFUL"].values
+          # Features
+          X = application_df.drop(["IS_SUCCESSFUL"],axis=1).values
 
-      # Split the preprocessed data into a training and testing dataset
-      X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+          # Split the preprocessed data into a training and testing dataset
+          X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
-      # Create a StandardScaler instances
-      scaler = StandardScaler()
+          # Create a StandardScaler instances
+          scaler = StandardScaler()
 
-      # Fit the StandardScaler
-      X_scaler = scaler.fit(X_train)
+          # Fit the StandardScaler
+          X_scaler = scaler.fit(X_train)
 
-      # Scale the data
-      X_train_scaled = X_scaler.transform(X_train)
-      X_test_scaled = X_scaler.transform(X_test)
+          # Scale the data
+          X_train_scaled = X_scaler.transform(X_train)
+          X_test_scaled = X_scaler.transform(X_test)
 
-      number_input_features = len(X_train[0])
-      number_input_features
+          number_input_features = len(X_train[0])
+          number_input_features
       
   Create a function to allow kerastuner to decide the number of hidden layers, number of neurons in each layer and the activation functions of each layer.
 
@@ -419,14 +419,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
 * Data Preprocessing
   * The target of the model is the "IS_SUCCESSFUL" category.
-  * Features:
-
-        application_cat = application_df.dtypes[application_df.dtypes == "object"].index.tolist()
- 
-<p align="center">
-  <img src="Images/Del_4_application_cat.png" width="200">
-</p        
-        
+  * Features:  "NAME", "APPLICATION_TYPE ", "AFFILIATION", "CLASSIFICATION", "USE_CASE", "ORGANIZATION", "STATUS", "INCOME_AMT", "ASK_AMT" 
   * "EIN" is neither a target nor a feature and was removed from the input data.  In addition, "SPECIAL_CONSIDERATIONS" was a noisy variable and for this reason was also removed from the input list.
 * Compiling, Training, and Evaluating the Model
   * The number of layers, neurons per layer and activation functions were selected by the kerastuner when it was run to search for the best hyperparameters.
