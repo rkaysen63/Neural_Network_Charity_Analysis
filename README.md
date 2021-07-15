@@ -340,7 +340,7 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
 
           return nn_model
 
-  Run the kerastuner search for best hyperparameters.
+  Run the kerastuner to search for best hyperparameters.
   
       # Import the kerastuner library
       from tensorflow import keras
@@ -422,13 +422,11 @@ Alphabet Soup is a charitable foundation that has funded over 34,000 organizatio
   * Features:  "NAME", "APPLICATION_TYPE ", "AFFILIATION", "CLASSIFICATION", "USE_CASE", "ORGANIZATION", "STATUS", "INCOME_AMT", "ASK_AMT" 
   * "EIN" is neither a target nor a feature and was removed from the input data.  In addition, "SPECIAL_CONSIDERATIONS" was a noisy variable and for this reason was also removed from the input list.
 * Compiling, Training, and Evaluating the Model
-  * The number of layers, neurons per layer and activation functions were selected by the kerastuner when it was run to search for the best hyperparameters.
-  * Using the kerastuner, I was able to exceed the target accuracy of 75%.
-  * In order to increase model performance, I preprocessed the data to bin "NAME", "APPLICATION_TYPE", and "CLASSIFICATION" columns.  in addition, I dropped the "SPECIAL_CONSIDERATIONS" column since less than one percent of the applicants had special considerations.  I then applied trial and error to estimate number of hidden layers, neurons per layer and activation functions.  I was not able to reach the target accuracy nor improve the loss.  I finally tried the kerastuner function and was able to allow the kerastuner to optimize the model.
+  * The number of layers, neurons and activation functions per layer were selected by the kerastuner when it was run to search for the best hyperparameters.
+  * Using the kerastuner, the accuracy exceeds the target of 75%.
+  * In order to increase model performance, I preprocessed the data to bin "NAME", "APPLICATION_TYPE", and "CLASSIFICATION" columns.  In addition, I dropped the "SPECIAL_CONSIDERATIONS" column since less than one percent of the applicants had special considerations.  I then applied trial and error method to estimate the number of hidden layers, neurons per layer and the activation functions necessary to reach the target accuracy.  I was not able to reach the target accuracy nor improve the loss.  Finally I resorted to the kerastuner function in order to optimize the model.
   
 ## Summary:
-Summarize the overall results of the deep learning model. Include a recommendation for how a different model could solve this classification problem, and explain your recommendation.
-  
-The results of the deep learning model were moderately successful.  The purpose of the model is help Alphabet Soup determine which applicants to approve based on their likelihood of success, or ability to make an impact with their project.  The model created by the neural network will predict potentially successful applicants with nearly 80% accuracy.  Since this large dataset does include the results, "IS_SUCCESSFUL", a supervised learning model may be able to produce even better results.
+The results of the deep learning model were moderately successful for the purpose of helping Alphabet Soup determine which applications to approve based on their likelihood of success, or ability to make an impact with their project.  The model created by the neural network will predict potentially successful applicants with nearly 80% accuracy.  Since this large dataset does include the results, "IS_SUCCESSFUL", a supervised learning model may be able to produce even better results.
 
 [Back to the Table of Contents](https://github.com/rkaysen63/Neural_Network_Charity_Analysis/blob/master/README.md#table-of-contents)
